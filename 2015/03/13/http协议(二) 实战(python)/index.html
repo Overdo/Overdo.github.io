@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Ubuntu,shadowsock," />
+  <meta name="keywords" content="http,https," />
 
 
 
@@ -81,18 +81,21 @@
 
 
 
-<meta name="description" content="墙外的世界总是那么充满诱惑，本文就讲讲怎么在ubuntu上假设ss">
-<meta name="keywords" content="Ubuntu,shadowsock">
+<meta name="description" content="上篇文章简单介绍了下HTTP协议，但是说到HTTPS时，有一个重要的概念没说，就是HTTPS中的S，这个S指的是SSL/TLS协议。SSL是指Secure Sockets Layer，而TLS（Transport Layer Security）则是SSL的升级版。">
+<meta name="keywords" content="http,https">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu上配置shadowsock服务端">
-<meta property="og:url" content="http://yoursite.com/2015/02/27/config-ss(server)in-ubuntu/index.html">
+<meta property="og:title" content="http协议(二) 实战">
+<meta property="og:url" content="http://yoursite.com/2015/03/13/http协议(二) 实战(python)/index.html">
 <meta property="og:site_name" content="Overdo&#39;s Notes">
-<meta property="og:description" content="墙外的世界总是那么充满诱惑，本文就讲讲怎么在ubuntu上假设ss">
+<meta property="og:description" content="上篇文章简单介绍了下HTTP协议，但是说到HTTPS时，有一个重要的概念没说，就是HTTPS中的S，这个S指的是SSL/TLS协议。SSL是指Secure Sockets Layer，而TLS（Transport Layer Security）则是SSL的升级版。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-03T05:46:54.676Z">
+<meta property="og:image" content="https://github.com/Overdo/Overdo.github.io/blob/master/uploads/images/protocol_modle.png?raw=true">
+<meta property="og:image" content="https://github.com/Overdo/Overdo.github.io/blob/master/uploads/images/https_handshak.png?raw=true">
+<meta property="og:updated_time" content="2018-02-25T05:39:30.743Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu上配置shadowsock服务端">
-<meta name="twitter:description" content="墙外的世界总是那么充满诱惑，本文就讲讲怎么在ubuntu上假设ss">
+<meta name="twitter:title" content="http协议(二) 实战">
+<meta name="twitter:description" content="上篇文章简单介绍了下HTTP协议，但是说到HTTPS时，有一个重要的概念没说，就是HTTPS中的S，这个S指的是SSL/TLS协议。SSL是指Secure Sockets Layer，而TLS（Transport Layer Security）则是SSL的升级版。">
+<meta name="twitter:image" content="https://github.com/Overdo/Overdo.github.io/blob/master/uploads/images/protocol_modle.png?raw=true">
 
 
 
@@ -122,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/02/27/config-ss(server)in-ubuntu/"/>
+  <link rel="canonical" href="http://yoursite.com/2015/03/13/http协议(二) 实战(python)/"/>
 
 
 
 
 
-  <title>Ubuntu上配置shadowsock服务端 | Overdo's Notes</title>
+  <title>http协议(二) 实战 | Overdo's Notes</title>
   
 
 
@@ -300,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/02/27/config-ss(server)in-ubuntu/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/13/http协议(二) 实战(python)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Overdo">
@@ -317,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ubuntu上配置shadowsock服务端</h1>
+          <h1 class="post-title" itemprop="name headline">http协议(二) 实战</h1>
         
 
         <div class="post-meta">
@@ -329,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-02-27T02:39:04+08:00">
-                2015-02-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-13T12:10:09+08:00">
+                2015-03-13
               </time>
             
 
@@ -352,8 +355,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/security/" itemprop="url" rel="index">
-                    <span itemprop="name">security</span>
+                  <a href="/categories/basic/" itemprop="url" rel="index">
+                    <span itemprop="name">basic</span>
                   </a>
                 </span>
 
@@ -391,7 +394,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  8
                 </span>
               
             </div>
@@ -412,32 +415,62 @@
       
 
       
-        <p>墙外的世界总是那么充满诱惑，本文就讲讲怎么在ubuntu上假设ss<br><a id="more"></a></p>
-<h2 id="服务端的安装与运行"><a href="#服务端的安装与运行" class="headerlink" title="服务端的安装与运行"></a>服务端的安装与运行</h2><h3 id="1-安装-pip-环境"><a href="#1-安装-pip-环境" class="headerlink" title="1. 安装 pip 环境"></a><strong>1. 安装 pip 环境</strong></h3><p>通过 Putty 等软件登录 Linux 后，输入以下命令来安装 pip 环境：</p>
-<p>Ubuntu / Debian</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install python-pip</span><br></pre></td></tr></table></figure>
-<p>CentOS</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-setuptools &amp;&amp; easy_install pip</span><br></pre></td></tr></table></figure>
-<p>在需要时输入 Y 后按回车确认。</p>
-<h3 id="2-直接安装-shadowsocks"><a href="#2-直接安装-shadowsocks" class="headerlink" title="2. 直接安装 shadowsocks"></a><strong>2. 直接安装 shadowsocks</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
-<p>如果出现 <code>Command &quot;python setup.py egg_info&quot; failed</code> 错误信息，则输入 <code>pip install --upgrade pip</code> 命令后，再执行上面的操作。<br>如果出现 <code>Could not import setuptools which is required to install from a source distribution</code> 错误信息，则输入 <code>pip install setuptools</code> 命令后，再执行上面的操作。</p>
-<h3 id="3-配置并运行-shadowsocks"><a href="#3-配置并运行-shadowsocks" class="headerlink" title="3. 配置并运行 shadowsocks"></a><strong>3. 配置并运行 shadowsocks</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssserver -p 8388 -k password -m rc4-md5 -d start</span><br></pre></td></tr></table></figure>
-<p>SS 端口默认为 8388；<br>password 为自定义的登录密码；<br>加密方式有 bf-cfb / aes-256-cfb / des-cfb /rc4 等可选，推荐使用 rc4-md5，因为 rc4-md5 比 aes-256-cfb 速度快好几倍。</p>
-<p>至此，SS服务端已经配置完成了。</p>
-<h2 id="SS优化与加速"><a href="#SS优化与加速" class="headerlink" title="SS优化与加速"></a>SS优化与加速</h2><h3 id="1-编辑文件-limits-conf"><a href="#1-编辑文件-limits-conf" class="headerlink" title="1. 编辑文件 limits.conf"></a><strong>1. 编辑文件 limits.conf</strong></h3><p>确认 Linux 内核版本为 3.5 以上，可用 <code>uname -a</code> 命令查看。</p>
-<p>关闭SS服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssserver -p 8388 -k password -m rc4-md5 -d stop</span><br></pre></td></tr></table></figure>
-<p>编辑文件 <code>limits.conf</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
-<p>增加以下两行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* soft nofile 51200</span><br><span class="line">* hard nofile 51200</span><br></pre></td></tr></table></figure>
-<p>设置以下参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -n 51200</span><br></pre></td></tr></table></figure>
-<h3 id="2-调整内核参数"><a href="#2-调整内核参数" class="headerlink" title="2. 调整内核参数"></a><strong>2. 调整内核参数</strong></h3><p>修改配置文件 <code>/etc/sysctl.conf</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<p>加入以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">fs.file-max = 51200</span><br><span class="line"></span><br><span class="line">net.core.rmem_max = 67108864</span><br><span class="line">net.core.wmem_max = 67108864</span><br><span class="line">net.core.netdev_max_backlog = 250000</span><br><span class="line">net.core.somaxconn = 4096</span><br><span class="line"></span><br><span class="line">net.ipv4.tcp_syncookies = 1</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.tcp_tw_recycle = 0</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 1200</span><br><span class="line">net.ipv4.ip_local_port_range = 10000 65000</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 8192</span><br><span class="line">net.ipv4.tcp_max_tw_buckets = 5000</span><br><span class="line">net.ipv4.tcp_fastopen = 3</span><br><span class="line">net.ipv4.tcp_rmem = 4096 87380 67108864</span><br><span class="line">net.ipv4.tcp_wmem = 4096 65536 67108864</span><br><span class="line">net.ipv4.tcp_mtu_probing = 1</span><br><span class="line">net.ipv4.tcp_congestion_control = hybla</span><br></pre></td></tr></table></figure>
-<p>修改后执行 <code>sysctl -p</code> 使配置生效，并重新 start SS 服务。</p>
+        <p>上篇文章简单介绍了下HTTP协议，但是说到HTTPS时，有一个重要的概念没说，就是HTTPS中的S，这个S指的是SSL/TLS协议。SSL是指Secure Sockets Layer，而TLS（Transport Layer Security）则是SSL的升级版。</p>
+<a id="more"></a>
+<p>不使用SSL/TLS的HTTP通信，就是不加密的通信。所有信息都是<strong>明文传播</strong>，这就带来了三大风险。</p>
+<ol>
+<li><strong>窃听风险</strong>（eavesdropping）：第三方可以获知通信内容。</li>
+<li><strong>篡改风险</strong>（tampering）：第三方可以修改通信内容。</li>
+</ol>
+<ol>
+<li><strong>冒充风险</strong>（pretending）：第三方可以冒充他人身份参与通信。</li>
+</ol>
+<p>SSL/TLS协议是为了解决这三大风险而设计的，希望达到：</p>
+<ol>
+<li><p>所有信息都是<strong>加密传播</strong>，第三方无法窃听。</p>
+</li>
+<li><p>具有<strong>校验机制</strong>，一旦被篡改，通信双方会立刻发现。</p>
+</li>
+<li><p>配备<strong>身份证书</strong>，防止身份被冒充。</p>
+<p>​                                        神图开篇</p>
+<p><img src="https://github.com/Overdo/Overdo.github.io/blob/master/uploads/images/protocol_modle.png?raw=true" alt="protocol_modle.png"></p>
+</li>
+</ol>
+<h2 id="SSL-TLS的基本运行过程"><a href="#SSL-TLS的基本运行过程" class="headerlink" title="SSL/TLS的基本运行过程"></a>SSL/TLS的基本运行过程</h2><p>SSL/TLS协议和HTTP协议一样，都是在应用层</p>
+<p>其基本思路是采用<a href="http://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank" rel="noopener">公钥加密法</a>，也就是说，客户端先向服务器端索要公钥，然后用公钥加密信息，服务器收到密文后，用自己的私钥解密。</p>
+<p>但是，这里有两个问题。</p>
+<p><strong>（1）如何保证公钥不被篡改？</strong></p>
+<blockquote>
+<p>解决方法：将公钥放在<a href="http://en.wikipedia.org/wiki/Digital_certificate" target="_blank" rel="noopener">数字证书</a>中。只要证书是可信的，公钥就是可信的。</p>
+</blockquote>
+<p><strong>（2）公钥加密计算量太大，如何减少耗用的时间？</strong></p>
+<blockquote>
+<p>解决方法：每一次对话（session），客户端和服务器端都生成一个”对话密钥”（session key），用它来加密信息。由于”对话密钥”是对称加密，所以运算速度非常快，而服务器公钥只用于加密”对话密钥”本身，这样就减少了加密运算的消耗时间。</p>
+</blockquote>
+<p>因此，SSL/TLS协议的基本过程是这样的：</p>
+<blockquote>
+<ol>
+<li><p>客户端向服务器端索要并验证公钥。</p>
+</li>
+<li><p>双方协商生成”对话密钥”。</p>
+</li>
+<li>双方采用”对话密钥”进行加密通信。</li>
+</ol>
+</blockquote>
+<p>上面过程的前两步，又称为”握手阶段”（handshake）。具体的握手阶段过程如下图</p>
+<p><img src="https://github.com/Overdo/Overdo.github.io/blob/master/uploads/images/https_handshak.png?raw=true" alt="TLS-shakehand.png"></p>
+<p>“握手阶段”涉及四次通信，我们一个个来看。需要注意的是，”握手阶段”的所有通信都是明文的。</p>
+<p>这个握手阶段在TCP三次握手建立连接之后，再然后就是HTTP过程了，只不过内容是经过对话密钥加密过的。最后是TCP四次挥手断开连接（其他的略过不讲）</p>
+<p>握手的四个阶段就不展开说了，需要知道的是，最后服务器端会返回一个会话密钥，如果是写爬虫，就少不了这么样一个参数</p>
+<p>比如我要写知乎爬虫，报错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.exceptions.SSLError: (<span class="string">"bad handshake: Error([('SSL routines', 'tls_process_server_certificate', 'certificate verify failed')],)"</span>,)</span><br></pre></td></tr></table></figure>
+<p>说的就是握手这个阶段出错了，怎么解决?</p>
+<p>一个办法是登陆一次，记录下cookie等参数，或者就是直接在程序里面登录</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>下面python代码简单演示一个最基本的http/https客户端是应该如何写的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parsed_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    解析 url 返回 (protocol host port path)</span></span><br><span class="line"><span class="string">    有的时候有的函数, 它本身就美不起来, 你要做的就是老老实实写</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 检查协议</span></span><br><span class="line">    protocol = <span class="string">'http'</span></span><br><span class="line">    <span class="keyword">if</span> url[:<span class="number">7</span>] == <span class="string">'http://'</span>:</span><br><span class="line">        u = url.split(<span class="string">'://'</span>)[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">elif</span> url[:<span class="number">8</span>] == <span class="string">'https://'</span>:</span><br><span class="line">        protocol = <span class="string">'https'</span></span><br><span class="line">        u = url.split(<span class="string">'://'</span>)[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># '://' 定位 然后取第一个 / 的位置来切片</span></span><br><span class="line">        u = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># https://g.cn:1234/hello</span></span><br><span class="line">    <span class="comment"># g.cn:1234/hello</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检查默认 path</span></span><br><span class="line">    i = u.find(<span class="string">'/'</span>)</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">-1</span>:</span><br><span class="line">        host = u</span><br><span class="line">        path = <span class="string">'/'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        host = u[:i]</span><br><span class="line">        path = u[i:]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检查端口</span></span><br><span class="line">    port_dict = &#123;</span><br><span class="line">        <span class="string">'http'</span>: <span class="number">80</span>,</span><br><span class="line">        <span class="string">'https'</span>: <span class="number">443</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 默认端口</span></span><br><span class="line">    port = port_dict[protocol]</span><br><span class="line">    <span class="comment"># if host.find(':') != -1:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">':'</span> <span class="keyword">in</span> host:</span><br><span class="line">        h = host.split(<span class="string">':'</span>)</span><br><span class="line">        host = h[<span class="number">0</span>]</span><br><span class="line">        port = int(h[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> protocol, host, port, path</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">socket_by_protocol</span><span class="params">(protocol)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    根据协议返回一个 socket 实例</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> protocol == <span class="string">'http'</span>:</span><br><span class="line">        s = socket.socket()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># HTTPS 协议需要使用 ssl.wrap_socket 包装一下原始的 socket</span></span><br><span class="line">        <span class="comment"># 除此之外无其他差别</span></span><br><span class="line">        s = ssl.wrap_socket(socket.socket())</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">response_by_socket</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    参数是一个 socket 实例</span></span><br><span class="line"><span class="string">    返回这个 socket 读取的所有数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    response = <span class="string">b''</span></span><br><span class="line">    buffer_size = <span class="number">1024</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        r = s.recv(buffer_size)</span><br><span class="line">        <span class="keyword">if</span> len(r) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        response += r</span><br><span class="line">    <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parsed_response</span><span class="params">(r)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    把 response 解析出 状态码 headers body 返回</span></span><br><span class="line"><span class="string">    状态码是 int</span></span><br><span class="line"><span class="string">    headers 是 dict</span></span><br><span class="line"><span class="string">    body 是 str</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    header, body = r.split(<span class="string">'\r\n\r\n'</span>, <span class="number">1</span>)</span><br><span class="line">    h = header.split(<span class="string">'\r\n'</span>)</span><br><span class="line">    status_code = h[<span class="number">0</span>].split()[<span class="number">1</span>]</span><br><span class="line">    status_code = int(status_code)</span><br><span class="line"></span><br><span class="line">    headers = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> h[<span class="number">1</span>:]:</span><br><span class="line">        k, v = line.split(<span class="string">': '</span>)</span><br><span class="line">        headers[k] = v</span><br><span class="line">    <span class="keyword">return</span> status_code, headers, body</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复杂的逻辑全部封装成函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    用 GET 请求 url 并返回响应</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    protocol, host, port, path = parsed_url(url)</span><br><span class="line">    <span class="comment"># 写 what 不写 how</span></span><br><span class="line">    s = socket_by_protocol(protocol)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line"></span><br><span class="line">    request = <span class="string">'GET &#123;&#125; HTTP/1.1\r\nHost: &#123;&#125;\r\nConnection: close\r\n\r\n'</span>.format(path, host)</span><br><span class="line">    encoding = <span class="string">'utf-8'</span></span><br><span class="line">    s.send(request.encode(encoding))</span><br><span class="line"></span><br><span class="line">    response = response_by_socket(s)</span><br><span class="line">    print(<span class="string">'get response, '</span>, response)</span><br><span class="line">    r = response.decode(encoding)</span><br><span class="line"></span><br><span class="line">    status_code, headers, body = parsed_response(r)</span><br><span class="line">    <span class="keyword">if</span> status_code <span class="keyword">in</span> [<span class="number">301</span>, <span class="number">302</span>]:</span><br><span class="line">        url = headers[<span class="string">'Location'</span>]</span><br><span class="line">        <span class="keyword">return</span> get(url)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> status_code, headers, body</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    url = <span class="string">'http://movie.douban.com/top250'</span></span><br><span class="line">    status_code, headers, body = get(url)</span><br><span class="line">    print(<span class="string">'main'</span>, status_code)</span><br><span class="line">    <span class="comment"># print('main headers (&#123;&#125;)'.format(headers))</span></span><br><span class="line">    <span class="comment"># print('main body', body)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下 test 开头的函数是单元测试</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_parsed_url</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    parsed_url 函数很容易出错, 所以我们写测试函数来运行看检测是否正确运行</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    http = <span class="string">'http'</span></span><br><span class="line">    https = <span class="string">'https'</span></span><br><span class="line">    host = <span class="string">'g.cn'</span></span><br><span class="line">    path = <span class="string">'/'</span></span><br><span class="line">    test_items = [</span><br><span class="line">        (<span class="string">'http://g.cn'</span>, (http, host, <span class="number">80</span>, path)),</span><br><span class="line">        (<span class="string">'http://g.cn/'</span>, (http, host, <span class="number">80</span>, path)),</span><br><span class="line">        (<span class="string">'http://g.cn:90'</span>, (http, host, <span class="number">90</span>, path)),</span><br><span class="line">        (<span class="string">'http://g.cn:90/'</span>, (http, host, <span class="number">90</span>, path)),</span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        (<span class="string">'https://g.cn'</span>, (https, host, <span class="number">443</span>, path)),</span><br><span class="line">        (<span class="string">'https://g.cn:233/'</span>, (https, host, <span class="number">233</span>, path)),</span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> test_items:</span><br><span class="line">        url, expected = t</span><br><span class="line">        u = parsed_url(url)</span><br><span class="line">        <span class="comment"># assert 是一个语句, 名字叫 断言</span></span><br><span class="line">        <span class="comment"># 如果断言成功, 条件成立, 则通过测试</span></span><br><span class="line">        <span class="comment"># 否则为测试失败, 中断程序报错</span></span><br><span class="line">        e = <span class="string">"parsed_url ERROR, (&#123;&#125;) (&#123;&#125;) (&#123;&#125;)"</span>.format(url, u, expected)</span><br><span class="line">        <span class="keyword">assert</span> u == expected, e</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_parsed_response</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    测试是否能正确解析响应</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># NOTE, 行末的 \ 表示连接多行字符串</span></span><br><span class="line">    response = <span class="string">'HTTP/1.1 301 Moved Permanently\r\n'</span> \</span><br><span class="line">        <span class="string">'Content-Type: text/html\r\n'</span> \</span><br><span class="line">        <span class="string">'Location: https://movie.douban.com/top250\r\n'</span> \</span><br><span class="line">        <span class="string">'Content-Length: 178\r\n\r\n'</span> \</span><br><span class="line">        <span class="string">'test body'</span></span><br><span class="line">    status_code, header, body = parsed_response(response)</span><br><span class="line">    <span class="keyword">assert</span> status_code == <span class="number">301</span></span><br><span class="line">    <span class="keyword">assert</span> len(list(header.keys())) == <span class="number">3</span></span><br><span class="line">    <span class="keyword">assert</span> body == <span class="string">'test body'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_get</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    测试是否能正确处理 HTTP 和 HTTPS</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    urls = [</span><br><span class="line">        <span class="string">'http://movie.douban.com/top250'</span>,</span><br><span class="line">        <span class="string">'https://movie.douban.com/top250'</span>,</span><br><span class="line">    ]</span><br><span class="line">    <span class="comment"># 这里就直接调用了 get 如果出错就会挂, 测试得比较简单</span></span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> urls:</span><br><span class="line">        get(u)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    用于测试的主函数</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    test_parsed_url()</span><br><span class="line">    <span class="comment"># test_get()</span></span><br><span class="line">    <span class="comment"># test_parsed_response()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># test()</span></span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>从中很容易发现这一段根据协议返回HTTP或HTTPS的socket这段代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">socket_by_protocol</span><span class="params">(protocol)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    根据协议返回一个 socket 实例</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> protocol == <span class="string">'http'</span>:</span><br><span class="line">        s = socket.socket()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># HTTPS 协议需要使用 ssl.wrap_socket 包装一下原始的 socket</span></span><br><span class="line">        <span class="comment"># 除此之外无其他差别</span></span><br><span class="line">        s = ssl.wrap_socket(socket.socket())</span><br><span class="line">    <span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+<p>这就是python的神奇之处了，一句话代码搞定</p>
 
       
     </div>
@@ -494,9 +527,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+            <a href="/tags/http/" rel="tag"># http</a>
           
-            <a href="/tags/shadowsock/" rel="tag"># shadowsock</a>
+            <a href="/tags/https/" rel="tag"># https</a>
           
         </div>
       
@@ -509,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/02/22/what-is-csrf/" rel="next" title="谈谈CSRF漏洞">
-                <i class="fa fa-chevron-left"></i> 谈谈CSRF漏洞
+              <a href="/2015/03/11/http协议(一) http与https简介/" rel="next" title="http协议(一)HTTP和HTTPS概述">
+                <i class="fa fa-chevron-left"></i> http协议(一)HTTP和HTTPS概述
               </a>
             
           </div>
@@ -518,10 +551,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/03/11/http协议(一) http与https简介/" rel="prev" title="http协议(一)HTTP和HTTPS概述">
-                http协议(一)HTTP和HTTPS概述 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -711,7 +740,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务端的安装与运行"><span class="nav-number">1.</span> <span class="nav-text">服务端的安装与运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装-pip-环境"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装 pip 环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-直接安装-shadowsocks"><span class="nav-number">1.2.</span> <span class="nav-text">2. 直接安装 shadowsocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-配置并运行-shadowsocks"><span class="nav-number">1.3.</span> <span class="nav-text">3. 配置并运行 shadowsocks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SS优化与加速"><span class="nav-number">2.</span> <span class="nav-text">SS优化与加速</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-编辑文件-limits-conf"><span class="nav-number">2.1.</span> <span class="nav-text">1. 编辑文件 limits.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-调整内核参数"><span class="nav-number">2.2.</span> <span class="nav-text">2. 调整内核参数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLS的基本运行过程"><span class="nav-number">1.</span> <span class="nav-text">SSL/TLS的基本运行过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">2.</span> <span class="nav-text">实战</span></a></li></ol></div>
             
 
           </div>

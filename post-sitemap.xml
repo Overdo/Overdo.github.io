@@ -7,6 +7,22 @@
     </url>
 
     <url>
+        <loc>http://yoursite.com/2015/03/13/http%E5%8D%8F%E8%AE%AE(%E4%BA%8C)%20%E5%AE%9E%E6%88%98(python)/</loc>
+        <lastmod>2018-02-25T05:39:30.743Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite.com/2015/03/11/http%E5%8D%8F%E8%AE%AE(%E4%B8%80)%20http%E4%B8%8Ehttps%E7%AE%80%E4%BB%8B/</loc>
+        <lastmod>2018-02-25T05:39:23.818Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://yoursite.com/2015/02/22/what-is-csrf/</loc>
         <lastmod>2018-02-03T05:56:43.725Z</lastmod>
         <changefreq>weekly</changefreq>
